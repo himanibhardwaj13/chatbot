@@ -1,1 +1,81 @@
-
+[{
+        "question": "Show all clients",
+        "sql": "SELECT client_id, client_name, status FROM clients;"
+    },
+    {
+        "question": "Show active clients",
+        "sql": "SELECT client_id, client_name, status FROM clients WHERE status = 'active';"
+    },
+    {
+        "question": "Show all assets",
+        "sql": "SELECT asset_id, client_id, asset_name, asset_type FROM assets;"
+    },
+    {
+        "question": "Show all server assets",
+        "sql": "SELECT asset_id, client_id, asset_name, asset_type FROM assets WHERE asset_type = 'server';"
+    },
+    {
+        "question": "Show all critical findings",
+        "sql": "SELECT finding_id, title, severity, status FROM findings WHERE severity = 5;"
+    },
+    {
+        "question": "Show all high severity findings",
+        "sql": "SELECT finding_id, title, severity, status FROM findings WHERE severity >= 4;"
+    },
+    {
+        "question": "Show open critical findings",
+        "sql": "SELECT finding_id, title, severity, status FROM findings WHERE severity = 5 AND status = 'open';"
+    },
+    {
+        "question": "How many findings are there?",
+        "sql": "SELECT COUNT(*) AS finding_count FROM findings;"
+    },
+    {
+        "question": "How many critical findings are there?",
+        "sql": "SELECT COUNT(*) AS critical_finding_count FROM findings WHERE severity = 5;"
+    },
+    {
+        "question": "Show findings for client Acme",
+        "sql": "SELECT f.finding_id, f.title, f.severity, f.status FROM findings f JOIN client_findings cf ON f.finding_id = cf.finding_id JOIN clients c ON cf.client_id = c.client_id WHERE c.client_name = 'Acme';"
+    },
+    {
+        "question": "Show critical findings for client Acme",
+        "sql": "SELECT f.finding_id, f.title, f.severity, f.status FROM findings f JOIN client_findings cf ON f.finding_id = cf.finding_id JOIN clients c ON cf.client_id = c.client_id WHERE c.client_name = 'Acme' AND f.severity = 5;"
+    },
+    {
+        "question": "Show assets belonging to Acme",
+        "sql": "SELECT a.asset_id, a.asset_name, a.asset_type FROM assets a JOIN clients c ON a.client_id = c.client_id WHERE c.client_name = 'Acme';"
+    },
+    {
+        "question": "Show findings affecting each asset",
+        "sql": "SELECT a.asset_id, a.asset_name, f.finding_id, f.title, f.severity FROM assets a JOIN asset_findings af ON a.asset_id = af.asset_id JOIN findings f ON af.finding_id = f.finding_id;"
+    },
+    {
+        "question": "Show critical findings affecting assets",
+        "sql": "SELECT a.asset_id, a.asset_name, f.finding_id, f.title, f.severity FROM assets a JOIN asset_findings af ON a.asset_id = af.asset_id JOIN findings f ON af.finding_id = f.finding_id WHERE f.severity = 5;"
+    },
+    {
+        "question": "Count findings by severity",
+        "sql": "SELECT severity, COUNT(*) AS finding_count FROM findings GROUP BY severity ORDER BY severity DESC;"
+    },
+    {
+        "question": "Count findings by status",
+        "sql": "SELECT status, COUNT(*) AS finding_count FROM findings GROUP BY status;"
+    },
+    {
+        "question": "Show the top 5 most severe findings",
+        "sql": "SELECT finding_id, title, severity, status FROM findings ORDER BY severity DESC, finding_id LIMIT 5;"
+    },
+    {
+        "question": "Show clients with their asset count",
+        "sql": "SELECT c.client_id, c.client_name, COUNT(a.asset_id) AS asset_count FROM clients c LEFT JOIN assets a ON c.client_id = a.client_id GROUP BY c.client_id, c.client_name;"
+    },
+    {
+        "question": "Show clients with critical finding count",
+        "sql": "SELECT c.client_id, c.client_name, COUNT(cf.finding_id) AS critical_finding_count FROM clients c JOIN client_findings cf ON c.client_id = cf.client_id JOIN findings f ON cf.finding_id = f.finding_id WHERE f.severity = 5 GROUP BY c.client_id, c.client_name;"
+    },
+    {
+        "question": "Show assets with open critical findings",
+        "sql": "SELECT a.asset_id, a.asset_name, f.finding_id, f.title FROM assets a JOIN asset_findings af ON a.asset_id = af.asset_id JOIN findings f ON af.finding_id = f.finding_id WHERE f.severity = 5 AND f.status = 'open';"
+    }
+]
