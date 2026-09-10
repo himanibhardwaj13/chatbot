@@ -9,7 +9,6 @@ load_dotenv()
 class GeminiService:
     def __init__(self):
         self.model = "gemini-3.6-flash"
-        print("Initializing GeminiService with model: ", os.getenv("GEMINI_API_KEY"))
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
     def generate_sql(self, question: str, examples: list, schema: list) -> str:
